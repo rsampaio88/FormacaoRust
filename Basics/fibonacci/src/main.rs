@@ -1,5 +1,31 @@
+//returns the nth fibonacci number
+//fn fibonacci(n: u32) -> u32 {
+//
+//    if n == 0 || n == 1 {
+//        return n;
+//    }
+//
+//    let mut a : u32 = 0; //Fibonacci(0)
+//    let mut b : u32 = 1; //Fibonacci(1)
+//    let mut posi : u32 = 2;
+//
+//     for _ in 2..=n {
+//        let fib = a + b;
+//        a = b;
+//        b = fib;
+//      }
+//    b
+//}
+
+// recursive version
 fn fibonacci(n: u32) -> u32 {
-    todo!("Implementar fibonacci aqui")
+    if n == 0 {
+        return 0;
+    } else if n == 1 {
+        return 1;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
 }
 
 #[cfg(test)]
@@ -19,7 +45,6 @@ mod fibonacci_test {
         assert_eq!(super::fibonacci(9), 34);
         assert_eq!(super::fibonacci(10), 55);
     }
-
 }
 
 fn main() {}
