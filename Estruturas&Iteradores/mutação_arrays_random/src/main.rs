@@ -1,15 +1,22 @@
-fn mut_array_iterator(array: &mut [u32], operação: char, outro_membro: u32) {
-    todo!()
+fn mut_array_iterator(array: &mut [u32], operacao: char, outro_membro: u32) {
+    array.iter_mut().for_each(|i| match operacao {
+        '+' => *i += outro_membro,
+        '-' => *i -= outro_membro,
+        '*' => *i *= outro_membro,
+        '/' => *i /= outro_membro,
+        _ => {}
+    });
 }
 
 fn main() {
-
+    let mut array = [1, 2, 3, 4, 5];
+    mut_array_iterator(&mut array, '*', 2);
+    println!("{:?}", array);
 }
 
 #[cfg(test)]
 mod mutable_array_test {
     const OWNERSHIP_TEST_ARRAY: [u32; 5] = [1, 2, 3, 4, 5];
-
 
     #[test]
     fn test_mut_ref_mutation() {
@@ -37,6 +44,4 @@ mod mutable_array_test {
 
         assert_eq!(array, [0, 1, 1, 2, 2]);
     }
-
-
 }
