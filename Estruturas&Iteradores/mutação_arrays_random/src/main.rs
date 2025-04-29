@@ -1,6 +1,8 @@
+
+
 fn mut_array_iterator(array: &mut [u32], operacao: char, outro_membro: u32) {
     array.iter_mut().for_each(|i| match operacao {
-        '+' => *i += outro_membro,
+        '+' => *i +=outro_membro,
         '-' => *i -= outro_membro,
         '*' => *i *= outro_membro,
         '/' => *i /= outro_membro,

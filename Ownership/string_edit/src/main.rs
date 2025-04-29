@@ -1,160 +1,158 @@
 use std::io;
 
 fn main() {
+    loop {
+        println!("\nChoose an option:");
+        println!("1: Add something to a string.");
+        println!("2: Remove something from a string.");
+        println!("3: Lowercase the string.");
+        println!("4: Uppercase the string.");
+        println!("5: Occurrence in string.");
+        println!("6: Repeat letter according to order in the alphabet.");
+        println!("0: Stop.");
 
-    let mut stop = true;
-    while stop {
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Error reading input");
 
-        println!("Choose an option:");
-    println!("1: Add something to a string.");
-    println!("2: Remove something to a string.");
-    println!("3: Lowercase the string.");
-    println!("4: Uppercase the string.");
-    println!("5: Ocorrence in string.");
-    println!("6: Repeat letter according order in alphabet.");
-    println!("Please, type an option.");
-    println!("Type 0 to stop.")
+        let input: u32 = match input.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Invalid input. Try a number.");
+                continue;
+            }
+        };
 
-    let mut input= String::new();
-
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Erro");
-
-    let input = input.parse().unwrap();
-
-    match input {
-
-        0 => {
-            stop = false;
-            panic!;
+        match input {
+            0 => {
+                println!("Exiting.");
+                break;
+            }
+            1 => add_string(),
+            2 => {
+                let result = remove_string();
+                println!("Final String: {}", result);
+            }
+            3 => {
+                println!("Enter the string:");
+                let mut input = String::new();
+                io::stdin().read_line(&mut input).expect("Error");
+                println!("Final String: {}", input.trim().to_lowercase());
+            }
+            4 => {
+                println!("Enter the string:");
+                let mut input = String::new();
+                io::stdin().read_line(&mut input).expect("Error");
+                println!("Final String: {}", input.trim().to_uppercase());
+            }
+            5 => occur_string(),
+            6 => {
+                let result = repeat_string();
+                println!("Repeated string: {}", result);
+            }
+            _ => println!("Invalid option, try again."),
         }
-
-        1 => {
-            add_string();
-        }
-
-        2 => {
-            let mut result = remove_string();
-            println!("Final String: {}", result);
-        }
-
-        3 => {
-            let mut str = String::new();
-            io::stdin()
-                .read_line(&mut str)
-                .expect("Erro");
-            
-            let str = str.to_lowercase();
-            println!("Final String: {}", str);
-        }
-
-        4 => {
-            let mut str = String::new();
-            io::stdin()
-                .read_line(&mut str)
-                .expect("Erro");
-
-            let str = str.to_uppercase();
-            println!("Final String: {}", str);
-        }
-
-        5 => {
-            let mut result = occur_string();
-            println!("Final String: {}", result);
-        }
-
-        6 => {
-            let mut result = repeat_string();
-            println!("Final String: {}", result);
-        }
-    } 
-    } 
-
+    }
 }
-
-
 
 fn add_string() {
-
     println!("Enter a string:");
     let mut str = String::new();
-    io::stdin()
-        .read_line(&mut str)
-        .expect("Erro");
-    println!("Enter what you wanna add to the string");
-    let mut add = String::new();
-    io::stdin()
-        .read_line(&mut add)
-        .expect("Erro");
-    let mut option = String::new();
-    println!("Type the index of string for the modification (from 0: the first one, to the length of word - 1):");
-    let mut index =String::new();
-    io::stdin()
-        .read_line(&mut index)
-        .expect("Erro");
-    let index = index.parse().unwrap();
+    io::stdin().read_line(&mut str).expect("Error");
+    let str = str.trim();
 
-    println!("Final string: {}{}{}", str[0..index], add, str[index..str.len()]);
+    println!("Enter what you want to add:");
+    let mut add = String::new();
+    io::stdin().read_line(&mut add).expect("Error");
+    let add = add.trim();
+
+    println!("Enter the index where you want to insert:");
+    let mut index_str = String::new();
+    io::stdin().read_line(&mut index_str).expect("Error");
+
+    let index: usize = match index_str.trim().parse() {
+        Ok(i) if i <= str.len() => i,
+        _ => {
+            println!("Invalid index.");
+            return;
+        }
+    };
+
+    let result = format!("{}{}{}", &str[..index], add, &str[index..]);
+    println!("Final string: {}", result);
 }
 
+fn remove_string() -> String {
+    println!("Enter a string:");
+    let mut str = String::new();
+    io::stdin().read_line(&mut str).expect("Error");
+
+    println!("Enter what you want to remove:");
+    let mut remove = String::new();
+    io::stdin().read_line(&mut remove).expect("Error");
+
+    str.trim().replace(remove.trim(), "")
+}
 
 fn occur_string() {
-
-    println!("Enter a string: ");
+    println!("Enter a string:");
     let mut str = String::new();
-    io::stdin()
-        .read_line(&mut str)
-        .expect("Erro");
+    io::stdin().read_line(&mut str).expect("Error");
 
-    println!("Enter what you wanna search in the string: ");
+    println!("Enter what you want to search for:");
     let mut sub = String::new();
-    io::stdin()
-        .read_line(&mut sub)
-        .expect("Erro");
+    io::stdin().read_line(&mut sub).expect("Error");
+
+    println!("1: Count how many times it appears.");
+    println!("2: Check if it appears.");
+    println!("0: Cancel.");
 
     let mut op = String::new();
-    println!("Type '1' if you wanna know how many times it occurs in string.");
-    println!("Type '2' if you wanna know if it occurs in string.");
-    println!("Type '0' to stop.");
+    io::stdin().read_line(&mut op).expect("Error");
 
+    let str = str.trim();
+    let sub = sub.trim();
 
-    io::stdin()
-        .read_line(&mut op)
-        .expect("Erro");
-    let op = op.parse().unwrap();
-
-    if op == 1 {
-        let result: i32 = string_search_count(str, sub);
-        println!("It occurs {} times.", result);
+    match op.trim() {
+        "1" => {
+            let count = str.matches(sub).count();
+            println!("It occurs {} time(s).", count);
         }
-    else if op == 2 {
-
-        let result = string_search(str, sub);
-
-        if result == true {
-            println!("It's in the string.");
-        else
-            println!("It's not in the string.");
+        "2" => {
+            if str.contains(sub) {
+                println!("It's in the string.");
+            } else {
+                println!("It's not in the string.");
+            }
         }
-    }
-    else if op == 0 {
-        break;
-    }
-    else {
-        println("ERROR: Not an option.");
-        break;
+        "0" => println!("Cancelled."),
+        _ => println!("Invalid option."),
     }
 }
 
-fn string_search(str: String, sub: String) -> bool {
+fn repeat_string() -> String {
+    println!("Enter a string:");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Error");
 
-    let len_sub = sub.len();
-    let len_str = str.len();
-    
-    for i in 0..len_str {
-        
-        for j in 0..len_sub()
-    }
+    input
+        .trim()
+        .chars()
+        .filter(|c| c.is_ascii_alphabetic())
+        .map(|c| {
+            let position = (c.to_ascii_lowercase() as u8 - 96) as usize;
+            c.to_string().repeat(position)
+        })
+        .collect()
 }
 
+/*
+    .c.is_ascii_alphabetic(): only alpha
+    .trim(): removes whitespaces, \n on the begining and end
+    .chars(): splits the string in chars "abcd" -> 'a' 'b' 'c' 'd'
+    .cycle(): creates an iterator to repeat char a,b,c,a,b,c,a,b,c,..
+    as u8: converts 'a' to ascii value
+    .to_string: convert to string
+    .repeat(n): repeates n times
+*/
