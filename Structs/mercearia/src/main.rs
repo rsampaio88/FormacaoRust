@@ -206,13 +206,13 @@ fn main() {
                 store.print_inventory();
             }
             "8" => break,
-            _ => println!("Invalid option."),
+            _ => println!("Sorry, invalid option."),
         }
     }
 }
 
-fn input(prompt: &str) -> String {
-    print!("{} ", prompt);
+fn input(goal: &str) -> String {
+    print!("{} ", goal);
 
     io::stdout().flush().unwrap();
     let mut val = String::new();
