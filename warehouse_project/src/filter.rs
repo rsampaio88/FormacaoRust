@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       filter.rs
+ * Purpose:    Brief description of the program
+ * =======================================================================
+ */
+
 use crate::item::Item;
 use crate::warehouse::Warehouse;
 

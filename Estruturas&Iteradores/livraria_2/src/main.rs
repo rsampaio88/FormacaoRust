@@ -1,79 +1,111 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Library implementation
+ *              + find a book through tittle, isbn, author
+ *              + find through keyword (intersection and union)
+ * =======================================================================
+ */
+
 use std::collections::HashMap;
 use std::io::{self, Write};
 
 #[derive(Debug, Clone)]
-enum ItemType {
-    Book,
-    Audiobook,
-    Statue,
-    Painting,
-}
-
-#[derive(Debug, Clone)]
-struct Item {
+struct Book {
     isbn: String,
     title: String,
     author: String,
     keywords: Vec<String>,
     quantity: u32,
-    item_type: ItemType,
 }
 
 struct Bookstore {
-    items: HashMap<String, Item>,
+    books: HashMap<String, Book>,
 }
 
 impl Bookstore {
-    fn new() -> Bookstore {
+    fn new() -> Self {
         Bookstore {
-            items: HashMap::new(),
+            books: HashMap::new(),
         }
     }
 
-    fn add_item(&mut self, item: Item) {
-        self.items.insert(item.isbn.clone(), item);
+    fn add_book(&mut self, book: Book) {
+        self.books.insert(book.isbn.clone(), book);
     }
 
-    fn remove_item(&mut self, isbn: &str) -> Option<Item> {
-        self.items.remove(isbn)
+    fn remove_book(&mut self, isbn: &str) -> Option<Book> {
+        self.books.remove(isbn)
     }
 
-    fn request_item(&mut self, isbn: &str) -> Option<Item> {
-        if let Some(item) = self.items.get_mut(isbn) {
-            if item.quantity > 0 {
-                item.quantity -= 1;
-                Some(item.clone())
+    fn request_book(&mut self, isbn: &str) -> Option<Book> {
+        if let Some(book) = self.books.get_mut(isbn) {
+            if book.quantity > 0 {
+                book.quantity -= 1;
+                Some(book.clone())
             } else {
-                println!("Sorry, this item is out of stock.");
+                println!("Sorry, this book is out of stock.");
                 None
             }
         } else {
-            println!("Item not found.");
+            println!("Book not found.");
             None
         }
     }
 
-    fn return_item(&mut self, isbn: &str) {
-        if let Some(item) = self.items.get_mut(isbn) {
-            item.quantity += 1;
+    fn return_book(&mut self, isbn: &str) {
+        if let Some(book) = self.books.get_mut(isbn) {
+            book.quantity += 1;
         } else {
-            println!("Sorry, item not found.");
+            println!("Sorry, book not found.");
         }
     }
 
-    fn find_items_by_keyword(&self, keyword: &str) {
-        let found_items = false;
-        for item in self.items.values() {
-            if item.keywords.contains(&keyword.to_string()) {
+    fn find_by_title(&self, title: &str) {
+        for book in self.books.values() {
+            if book.title.eq_ignore_ascii_case(title) {
                 println!(
-                    "Found item: '{}' by {} (ISBN: {})",
-                    item.title, item.author, item.isbn
-                )
+                    "Found: '{}' by {} (ISBN: {})",
+                    book.title, book.author, book.isbn
+                );
             }
         }
+    }
 
-        if !found_items {
-            println!("Sorry, no items found with the keyword '{}'", keyword);
+    fn find_by_author(&self, author: &str) {
+        for book in self.books.values() {
+            if book.author.eq_ignore_ascii_case(author) {
+                println!("Found: '{}' (ISBN: {})", book.title, book.isbn);
+            }
+        }
+    }
+
+    fn search_by_keywords_union(&self, keywords: Vec<&str>) {
+        for book in self.books.values() {
+            if keywords
+                .iter()
+                .any(|k| book.keywords.contains(&k.to_string()))
+            {
+                println!(
+                    "MATCH (union): '{}' by {} (ISBN: {})",
+                    book.title, book.author, book.isbn
+                );
+            }
+        }
+    }
+
+    fn search_by_keywords_intersection(&self, keywords: Vec<&str>) {
+        for book in self.books.values() {
+            if keywords
+                .iter()
+                .all(|k| book.keywords.contains(&k.to_string()))
+            {
+                println!(
+                    "MATCH (intersection): '{}' by {} (ISBN: {})",
+                    book.title, book.author, book.isbn
+                );
+            }
         }
     }
 }
@@ -81,25 +113,23 @@ impl Bookstore {
 fn main() {
     let mut bookstore = Bookstore::new();
 
-    bookstore.add_item(Item {
+    bookstore.add_book(Book {
         isbn: "978-0999999999".to_string(),
-        title: " History of the Roman Empire".to_string(),
+        title: "History of the Roman Empire".to_string(),
         author: "Will Smith".to_string(),
         keywords: vec!["Roman".to_string(), "History".to_string()],
         quantity: 9,
-        item_type: ItemType::Audiobook,
     });
 
-    bookstore.add_item(Item {
+    bookstore.add_book(Book {
         isbn: "978-020000224".to_string(),
         title: "The Programmer".to_string(),
         author: "Emma Stone".to_string(),
         keywords: vec!["programming".to_string(), "Rust".to_string()],
         quantity: 26,
-        item_type: ItemType::Book,
     });
 
-    bookstore.add_item(Item {
+    bookstore.add_book(Book {
         isbn: "088-06743599".to_string(),
         title: "Marketing".to_string(),
         author: "Roberto".to_string(),
@@ -109,145 +139,107 @@ fn main() {
             "business".to_string(),
         ],
         quantity: 1,
-        item_type: ItemType::Painting,
     });
 
     loop {
-        println!("\n--- Bookstore Menu ---");
-        println!("1: Add an item");
-        println!("2: Remove an item");
-        println!("3: Request an item");
-        println!("4: Return an item");
-        println!("5: Search for items by keyword");
-        println!("6: Leave");
+        println!(
+            "
+ --- Bookstore Menu ---"
+        );
+        println!("1: Add a book");
+        println!("2: Remove a book");
+        println!("3: Request a book");
+        println!("4: Return a book");
+        println!("5: Search by single keyword");
+        println!("6: Search by title");
+        println!("7: Search by author");
+        println!("8: Search by keywords (union)");
+        println!("9: Search by keywords (intersection)");
+        println!("10: Exit");
         print!("Please enter an option: ");
         io::stdout().flush().unwrap();
 
         let mut option = String::new();
-        io::stdin()
-            .read_line(&mut option)
-            .expect("Failed to read line");
+        io::stdin().read_line(&mut option).unwrap();
         let option = option.trim();
 
         match option {
             "1" => {
-                let mut isbn = String::new();
-                let mut title = String::new();
-                let mut author = String::new();
-                let mut keywords = String::new();
-                let mut quantity = String::new();
-                let mut item_type = String::new();
+                let isbn = input("Enter ISBN:");
+                let title = input("Enter title:");
+                let author = input("Enter author:");
+                let keywords_str = input("Enter keywords separated by '&':");
+                let quantity = input("Enter quantity:").parse::<u32>().unwrap_or(0);
 
-                println!("Enter ISBN: ");
-                io::stdin()
-                    .read_line(&mut isbn)
-                    .expect("Failed to read line");
-                println!("Enter title: ");
-                io::stdin()
-                    .read_line(&mut title)
-                    .expect("Failed to read line");
-                println!("Enter author: ");
-                io::stdin()
-                    .read_line(&mut author)
-                    .expect("Failed to read line");
-                println!("Enter keywords separated by '&': ");
-                io::stdin()
-                    .read_line(&mut keywords)
-                    .expect("Failed to read line");
-                println!("Enter quantity: ");
-                io::stdin()
-                    .read_line(&mut quantity)
-                    .expect("Failed to read line");
-                println!("Enter item type (1: Book, 2: AudioBook, 3: Statue, 4:Painting): ");
-                io::stdin()
-                    .read_line(&mut item_type)
-                    .expect("Failed to read line");
-
-                let isbn = isbn.trim().to_string();
-                let title = title.trim().to_string();
-                let author = author.trim().to_string();
-                let keywords: Vec<String> = keywords
-                    .trim()
+                let keywords = keywords_str
                     .split('&')
                     .map(|s| s.trim().to_string())
                     .collect();
-                let quantity: u32 = quantity.trim().parse().unwrap_or(0);
-                let item_type = match item_type.trim() {
-                    "1" => ItemType::Book,
-                    "2" => ItemType::Audiobook,
-                    "3" => ItemType::Statue,
-                    "4" => ItemType::Painting,
-                    _ => {
-                        println!("Sorry don't recognise that type. By default it will be book");
-                        ItemType::Book
-                    }
-                };
 
-                bookstore.add_item(Item {
+                bookstore.add_book(Book {
                     isbn,
                     title,
                     author,
                     keywords,
                     quantity,
-                    item_type,
                 });
 
-                println!("Item added successfully.");
+                println!("Book added successfully.");
             }
             "2" => {
-                let mut isbn = String::new();
-                println!("Enter ISBN of the item to remove: ");
-                io::stdin()
-                    .read_line(&mut isbn)
-                    .expect("Failed to read line");
-
-                let isbn = isbn.trim();
-                if bookstore.remove_item(isbn).is_some() {
-                    println!("Item removed successfully.");
+                let isbn = input("Enter ISBN of the book to remove:");
+                if bookstore.remove_book(&isbn).is_some() {
+                    println!("Book removed successfully.");
                 } else {
-                    println!("Item not found.");
+                    println!("Book not found.");
                 }
             }
             "3" => {
-                let mut isbn = String::new();
-                println!("Enter ISBN of the item to request: ");
-                io::stdin()
-                    .read_line(&mut isbn)
-                    .expect("Failed to read line");
-
-                let isbn = isbn.trim();
-                if bookstore.request_item(isbn).is_some() {
-                    println!("Item requested successfully.");
+                let isbn = input("Enter ISBN of the book to request:");
+                if bookstore.request_book(&isbn).is_some() {
+                    println!("Book requested successfully.");
                 }
             }
             "4" => {
-                let mut isbn = String::new();
-                println!("Enter ISBN of the item to return: ");
-                io::stdin()
-                    .read_line(&mut isbn)
-                    .expect("Failed to read line");
-
-                let isbn = isbn.trim();
-                bookstore.return_item(isbn);
-                println!("Item returned successfully.");
+                let isbn = input("Enter ISBN of the book to return:");
+                bookstore.return_book(&isbn);
+                println!("Book returned successfully.");
             }
             "5" => {
-                let mut keyword = String::new();
-                println!("Enter a keyword to search for: ");
-                io::stdin()
-                    .read_line(&mut keyword)
-                    .expect("Failed to read line");
-
-                let keyword = keyword.trim().to_string();
-                bookstore.find_items_by_keyword(&keyword);
+                let keyword = input("Enter a keyword to search for:");
+                bookstore.search_by_keywords_union(vec![&keyword]);
             }
             "6" => {
-                println!("See you soon!");
+                let title = input("Enter title:");
+                bookstore.find_by_title(&title);
+            }
+            "7" => {
+                let author = input("Enter author:");
+                bookstore.find_by_author(&author);
+            }
+            "8" => {
+                let keywords = input("Enter keywords (union) separated by '&':");
+                let terms: Vec<&str> = keywords.split('&').map(|s| s.trim()).collect();
+                bookstore.search_by_keywords_union(terms);
+            }
+            "9" => {
+                let keywords = input("Enter keywords (intersection) separated by '&':");
+                let terms: Vec<&str> = keywords.split('&').map(|s| s.trim()).collect();
+                bookstore.search_by_keywords_intersection(terms);
+            }
+            "10" => {
+                println!("Goodbye!");
                 break;
             }
-            _ => {
-                println!("Invalid option. Please try again.");
-            }
+            _ => println!("Invalid option."),
         }
     }
+}
+
+fn input(prompt: &str) -> String {
+    print!("{} ", prompt);
+    io::stdout().flush().unwrap();
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    input.trim().to_string()
 }

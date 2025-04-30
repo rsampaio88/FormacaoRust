@@ -1,4 +1,12 @@
 /*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a calculator
+ * =======================================================================
+ */
+
+/*
 
     .into_iter(): creates an iterator Vec<u32> for the Vec<Vec<u32>>
     .flat_map(): maps acordding the iterator

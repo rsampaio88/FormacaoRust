@@ -1,12 +1,11 @@
-/// Desafio da calculadora
-/// Pode ser implementado com recurso à analise de apenas
-/// uma string ou com cada elemento separado na sua propria string.
-/// Podem ver exemplos de como vai ser utilizada a função nos testes disponíveis.
-///
-/// Devem apenas implementar uma das funções.
-///
-/// Podem comentar a função que não vão implementar para não haver problemas de compilação, incluindo os testes
-/// para a mesma.
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a calculator
+ * =======================================================================
+ */
+
 use std::io;
 
 fn main() {

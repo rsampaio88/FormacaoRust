@@ -1,3 +1,12 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a cgrocery store
+ *              -
+ * =======================================================================
+ */
+
 use std::collections::HashMap;
 use std::io::{self, Write};
 
@@ -33,7 +42,7 @@ impl GroceryStore {
     }
 
     fn remove_product(&mut self, id: &str) -> bool {
-        for (_loc, products) in self.inventory.iter_mut() {
+        for products in self.inventory.values_mut() {
             if let Some(pos) = products.iter().position(|p| p.id == id) {
                 products.remove(pos);
                 return true;
@@ -43,7 +52,7 @@ impl GroceryStore {
     }
 
     fn move_product(&mut self, id: &str, new_location: Location) -> bool {
-        for (loc, products) in self.inventory.iter_mut() {
+        for products in self.inventory.values_mut() {
             if let Some(pos) = products.iter().position(|p| p.id == id) {
                 let product = products.remove(pos);
                 self.add_product(new_location, product);
@@ -78,7 +87,7 @@ impl GroceryStore {
             if let Some(p) = products.iter_mut().find(|p| p.id == id) {
                 let new_quantity = p.quantity as i32 + amount;
                 if new_quantity < 0 {
-                    println!("Not enough stock to remove.");
+                    println!("Sorry, not enough stock to remove.");
                     return false;
                 }
                 p.quantity = new_quantity as u32;
@@ -90,7 +99,7 @@ impl GroceryStore {
 
     fn print_inventory(&self) {
         if self.inventory.is_empty() {
-            println!("It's empty.");
+            println!("Sorry, inventory is empty.");
             return;
         }
 
@@ -137,19 +146,16 @@ fn main() {
         let mut option = String::new();
         io::stdin().read_line(&mut option).unwrap();
 
-        let option = option.trim();
-
-        match option {
+        match option.trim() {
             "1" => {
                 let (loc, product) = get();
                 store.add_product(loc, product);
-                println!("Product added.");
+                println!("SUCESS!!!");
             }
             "2" => {
                 let id = input("Enter product ID to remove:");
-
                 if store.remove_product(&id) {
-                    println!("Product removed.");
+                    println!("SUCESS!!!");
                 } else {
                     println!("Sorry, product not found.");
                 }
@@ -157,9 +163,8 @@ fn main() {
             "3" => {
                 let id = input("Enter product ID to move:");
                 let new_loc = get_location();
-
                 if store.move_product(&id, new_loc) {
-                    println!("Product moved.");
+                    println!("SUCESS!!!");
                 } else {
                     println!("Sorry, product not found.");
                 }
@@ -167,9 +172,8 @@ fn main() {
             "4" => {
                 let id = input("Enter product ID to rename:");
                 let name = input("Enter new name:");
-
                 if store.update_name(&id, name) {
-                    println!("Name updated.");
+                    println!("SUCESS!!!");
                 } else {
                     println!("Sorry, product not found.");
                 }
@@ -177,24 +181,22 @@ fn main() {
             "5" => {
                 let id = input("Enter product ID to update price:");
                 let price_str = input("Enter new price:");
-
                 if let Ok(price) = price_str.parse::<f64>() {
                     if store.update_price(&id, price) {
-                        println!("Price updated.");
+                        println!("SUCESS!!!");
                     } else {
                         println!("Sorry, product not found.");
                     }
                 } else {
-                    println!("Sorry, invalid price.");
+                    println!("Sory, invalid price.");
                 }
             }
             "6" => {
                 let id = input("Enter product ID:");
-                let amount_str = input("Enter amount to add or remove. For example 10 (for adding 10 units) or -5 (for remove 5 units):");
-
+                let amount_str = input("Enter amount to add or remove:");
                 if let Ok(amount) = amount_str.parse::<i32>() {
                     if store.restock(&id, amount) {
-                        println!("Restock successful.");
+                        println!("SUCESS!!.");
                     } else {
                         println!("Sorry, failed to restock.");
                     }
@@ -202,29 +204,23 @@ fn main() {
                     println!("Sorry, invalid amount.");
                 }
             }
-            "7" => {
-                store.print_inventory();
-            }
+            "7" => store.print_inventory(),
             "8" => break,
             _ => println!("Sorry, invalid option."),
         }
     }
 }
 
-fn input(goal: &str) -> String {
-    print!("{} ", goal);
-
+fn input(text: &str) -> String {
+    print!("{} ", text);
     io::stdout().flush().unwrap();
     let mut val = String::new();
-
     io::stdin().read_line(&mut val).unwrap();
-
     val.trim().to_string()
 }
 
 fn get() -> (Location, Product) {
     let location = get_location();
-
     let id = input("Product ID:");
     let name = input("Name:");
     let exp = input("Expiration date:");
@@ -249,6 +245,5 @@ fn get_location() -> Location {
     let row = input("Row:");
     let shelf = input("Shelf:");
     let zone = input("Zone:");
-
     Location { row, shelf, zone }
 }

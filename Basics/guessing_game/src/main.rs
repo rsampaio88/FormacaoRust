@@ -1,3 +1,11 @@
+/*
+ * ==========================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    The user inputs a number in order to guess the secret number
+ * ==========================================================================
+ */
+
 use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
@@ -12,7 +20,7 @@ fn main() {
 
         io::stdin()
             .read_line(&mut guess)
-            .expect("Ups :(, failed to read cargline");
+            .expect("Ups :(, failed to read line");
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,

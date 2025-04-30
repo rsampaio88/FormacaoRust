@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       warehouse.rs
+ * Purpose:    Brief description of the program
+ * =======================================================================
+ */
+
 
 use crate::item::Item;
 

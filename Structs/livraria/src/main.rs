@@ -1,3 +1,12 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a library
+ *              - add, remove, borrow and return books system
+ * =======================================================================
+ */
+
 use std::collections::HashMap;
 use std::io::{self, Write};
 

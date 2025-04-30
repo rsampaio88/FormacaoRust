@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       item.rs
+ * Purpose:    Brief description of the program
+ * =======================================================================
+ */
+
 
 use chrono::{NaiveDate, Utc};
 

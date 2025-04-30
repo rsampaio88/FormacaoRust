@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Checks if a number is prime
+ * =======================================================================
+ */
+
 fn main() {}
 
 fn check_if_prime(n: u32) -> bool {

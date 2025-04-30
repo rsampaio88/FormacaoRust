@@ -1,23 +1,32 @@
-//returns the nth fibonacci number
-//fn fibonacci(n: u32) -> u32 {
-//
-//    if n == 0 || n == 1 {
-//        return n;
-//    }
-//
-//    let mut a : u32 = 0; //Fibonacci(0)
-//    let mut b : u32 = 1; //Fibonacci(1)
-//    let mut posi : u32 = 2;
-//
-//     for _ in 2..=n {
-//        let fib = a + b;
-//        a = b;
-//        b = fib;
-//      }
-//    b
-//}
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       filter.rs
+ * Purpose:    returns the nth fibonacci number
+ * =======================================================================
+ */
 
-// recursive version
+
+/* 
+fn fibonacci(n: u32) -> u32 {
+
+    if n == 0 || n == 1 {
+        return n;
+    }
+
+    let mut a : u32 = 0; //Fibonacci(0)
+    let mut b : u32 = 1; //Fibonacci(1)
+    let mut posi : u32 = 2;
+
+    for _ in 2..=n {
+        let fib = a + b;
+                a = b;
+        b = fib;
+      }
+    b
+}*/
+
+//recursive version
 fn fibonacci(n: u32) -> u32 {
     if n == 0 {
         return 0;

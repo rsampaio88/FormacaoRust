@@ -1,4 +1,12 @@
 /*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a stack
+ * =======================================================================
+ */
+
+/*
    LIFO:    Last In First Out
 
    new : create new stack

@@ -1,14 +1,19 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of a calculator
+ * =======================================================================
+ */
 
 /* NOTES
 
-    clone: copy 
+    clone: copy
     (1): facilitates while search for the product
     entry(location.clone()).or_default().push(product) : creates if doesnt exist, or adds if exist
-    get_mut(): search for me, and give me the mutuable value 
-    
+    get_mut(): search for me, and give me the mutuable value
+
 */
-
-
 
 use std::collections::HashMap;
 use std::io::{self, Write};
@@ -31,7 +36,7 @@ struct Location {
 
 struct GroceryStore {
     inventory: HashMap<Location, Vec<Product>>,
-    product_locations: HashMap<String, Location>>, //inverso do inventory (1)
+    product_locations: HashMap<String, Location>, // mapa reverso correto
 }
 
 impl GroceryStore {
@@ -43,18 +48,15 @@ impl GroceryStore {
     }
 
     fn add_product(&mut self, location: Location, product: Product) {
-        self.product_locations.insert(product.id.clone(), location.clone());
+        self.product_locations
+            .insert(product.id.clone(), location.clone());
         self.inventory.entry(location).or_default().push(product);
     }
 
     fn remove_product(&mut self, id: &str) -> bool {
-
         if let Some(location) = self.product_locations.remove(id) {
-
             if let Some(products) = self.inventory.get_mut(&location) {
-
                 if let Some(pos) = products.iter().position(|p| p.id == id) {
-
                     products.remove(pos);
                     return true;
                 }
@@ -63,13 +65,15 @@ impl GroceryStore {
         false
     }
 
-
     fn move_product(&mut self, id: &str, new_location: Location) -> bool {
-        for (loc, products) in self.inventory.iter_mut() {
-            if let Some(pos) = products.iter().position(|p| p.id == id) {
-                let product = products.remove(pos);
-                self.add_product(new_location, product);
-                return true;
+        if let Some(current_location) = self.product_locations.get(id).cloned() {
+            if let Some(products) = self.inventory.get_mut(&current_location) {
+                if let Some(pos) = products.iter().position(|p| p.id == id) {
+                    let product = products.remove(pos);
+                    self.add_product(new_location.clone(), product);
+                    self.product_locations.insert(id.to_string(), new_location);
+                    return true;
+                }
             }
         }
         false
@@ -108,6 +112,17 @@ impl GroceryStore {
             }
         }
         false
+    }
+
+    fn find_product(&self, id: &str) {
+        if let Some(location) = self.product_locations.get(id) {
+            println!(
+                "Product ID '{}' found at Row: {}, Shelf: {}, Zone: {}",
+                id, location.row, location.shelf, location.zone
+            );
+        } else {
+            println!("Product ID '{}' not found.", id);
+        }
     }
 
     fn print_inventory(&self) {
@@ -151,8 +166,8 @@ fn main() {
         println!("5: Change product price");
         println!("6: Restock product");
         println!("7: Show inventory");
-        println!("8: Search ")
-        println!("8: Exit");
+        println!("8: Find product location");
+        println!("9: Exit");
 
         print!("Choose an option: ");
         io::stdout().flush().unwrap();
@@ -170,7 +185,6 @@ fn main() {
             }
             "2" => {
                 let id = input("Enter product ID to remove:");
-
                 if store.remove_product(&id) {
                     println!("Product removed.");
                 } else {
@@ -180,7 +194,6 @@ fn main() {
             "3" => {
                 let id = input("Enter product ID to move:");
                 let new_loc = get_location();
-
                 if store.move_product(&id, new_loc) {
                     println!("Product moved.");
                 } else {
@@ -190,7 +203,6 @@ fn main() {
             "4" => {
                 let id = input("Enter product ID to rename:");
                 let name = input("Enter new name:");
-
                 if store.update_name(&id, name) {
                     println!("Name updated.");
                 } else {
@@ -200,7 +212,6 @@ fn main() {
             "5" => {
                 let id = input("Enter product ID to update price:");
                 let price_str = input("Enter new price:");
-
                 if let Ok(price) = price_str.parse::<f64>() {
                     if store.update_price(&id, price) {
                         println!("Price updated.");
@@ -213,8 +224,7 @@ fn main() {
             }
             "6" => {
                 let id = input("Enter product ID:");
-                let amount_str = input("Enter amount to add or remove. For example 10 (for adding 10 units) or -5 (for remove 5 units):");
-
+                let amount_str = input("Enter amount to add or remove:");
                 if let Ok(amount) = amount_str.parse::<i32>() {
                     if store.restock(&id, amount) {
                         println!("Restock successful.");
@@ -225,10 +235,12 @@ fn main() {
                     println!("Sorry, invalid amount.");
                 }
             }
-            "7" => {
-                store.print_inventory();
+            "7" => store.print_inventory(),
+            "8" => {
+                let id = input("Enter product ID to search:");
+                store.find_product(&id);
             }
-            "8" => break,
+            "9" => break,
             _ => println!("Sorry, invalid option."),
         }
     }
@@ -236,18 +248,14 @@ fn main() {
 
 fn input(goal: &str) -> String {
     print!("{} ", goal);
-
     io::stdout().flush().unwrap();
     let mut val = String::new();
-
     io::stdin().read_line(&mut val).unwrap();
-
     val.trim().to_string()
 }
 
 fn get() -> (Location, Product) {
     let location = get_location();
-
     let id = input("Product ID:");
     let name = input("Name:");
     let exp = input("Expiration date:");
@@ -272,6 +280,5 @@ fn get_location() -> Location {
     let row = input("Row:");
     let shelf = input("Shelf:");
     let zone = input("Zone:");
-
     Location { row, shelf, zone }
 }

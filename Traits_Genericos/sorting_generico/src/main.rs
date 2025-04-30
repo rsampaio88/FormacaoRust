@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Sorting algorithm
+ * =======================================================================
+ */
+
 #[warn(dead_code)]
 fn bubble_sort<T: Ord>(v: &mut Vec<T>) {
     let mut change = true;

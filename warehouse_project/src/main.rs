@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Brief description of the program
+ * =======================================================================
+ */
+
 mod filter;
 mod item;
 mod utils;

@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       utils.rs
+ * Purpose:    Brief description of the program
+ * =======================================================================
+ */
+
 
 use std::io::{self, Write};
 
