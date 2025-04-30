@@ -6,9 +6,10 @@
  * =======================================================================
  */
 
+mod shapes;
+
+use shapes::*;
 use std::io;
-//use clearscreen::clear;
-use shapes::{Circle, Cube, Cylinder, RegularPolygon, Shape, Sphere, Square};
 
 fn main() {
     geometric_shapes();
@@ -16,9 +17,8 @@ fn main() {
 
 fn geometric_shapes() {
     loop {
-        clear().unwrap();
         println!(
-            "Choose a geometric shape:
+            "\nChoose a geometric shape:
 1) Square
 2) Circle
 3) Cube
@@ -28,99 +28,91 @@ fn geometric_shapes() {
 7) Exit"
         );
 
-        let mut input = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-        let choice: u32 = match input.trim().parse() {
-            Ok(num) => num,
-            Err(_) => {
-                println!("Invalid input. Please enter a number.");
-                continue;
-            }
-        };
+        let choice = read_u32("Your choice: ");
 
-        let shape = match choice {
+        match choice {
             1 => {
-                println!("Enter the side length of the square:");
-                let side = read_f64();
-                Shape::Square { side }
+                let side = read_f64("Enter the side length of the square: ");
+                let square = Square { side };
+                show_result(&square);
             }
             2 => {
-                println!("Enter the radius of the circle:");
-                let radius = read_f64();
-                Shape::Circle { radius }
+                let radius = read_f64("Enter the radius of the circle: ");
+                let circle = Circle { radius };
+                show_result(&circle);
             }
             3 => {
-                println!("Enter the side length of the cube:");
-                let side = read_f64();
-                Shape::Cube { side }
+                let side = read_f64("Enter the side length of the cube: ");
+                let cube = Cube { side };
+                show_result(&cube);
             }
             4 => {
-                println!("Enter the radius of the cylinder:");
-                let radius = read_f64();
-                println!("Enter the height of the cylinder:");
-                let height = read_f64();
-                Shape::Cylinder { radius, height }
+                let radius = read_f64("Enter the radius of the cylinder: ");
+                let height = read_f64("Enter the height of the cylinder: ");
+                let cylinder = Cylinder { radius, height };
+                show_result(&cylinder);
             }
             5 => {
-                println!("Enter the radius of the sphere:");
-                let radius = read_f64();
-                Shape::Sphere { radius }
+                let radius = read_f64("Enter the radius of the sphere: ");
+                let sphere = Sphere { radius };
+                show_result(&sphere);
             }
             6 => {
-                println!("Enter the number of sides for the regular polygon:");
-                let sides = read_u32();
-                println!("Enter the length of each side:");
-                let length = read_f64();
-                Shape::RegularPolygon { sides, length }
+                let sides = read_u32("Enter the number of sides: ");
+                let length = read_f64("Enter the length of each side: ");
+                let poly = RegularPolygon { sides, length };
+                show_result(&poly);
             }
-            7 => break,
-            _ => {
-                println!("Invalid option, please try again.");
-                continue;
+            7 => {
+                println!("Leaving..");
+                break;
             }
-        };
-
-        match shape.area() {
-            Some(area) => println!("Area: {:.2}", area),
-            None => println!("Area: Not applicable"),
+            _ => println!("Sorry, invalid option."),
         }
-
-        match shape.perimeter() {
-            Some(perimeter) => println!("Perimeter: {:.2}", perimeter),
-            None => println!("Perimeter: Not applicable"),
-        }
-
-        match shape.volume() {
-            Some(volume) => println!("Volume: {:.2}", volume),
-            None => println!("Volume: Not applicable"),
-        }
-        // {:.2} F  Some(36.0)  FIX -> 36.0
-        press_to_continue();
     }
 }
 
-fn press_to_continue() {
-    println!("\nPress Enter to continue...");
-    let mut input = String::new();
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
+fn show_result<T: Shape>(shape: &T) {
+    match shape.area() {
+        Some(area) => println!("Area: {:.2}", area),
+        None => println!("Area: Not applicable"),
+    }
+    match shape.perimeter() {
+        Some(p) => println!("Perimeter: {:.2}", p),
+        None => println!("Perimeter: Not applicable"),
+    }
+    match shape.volume() {
+        Some(v) => println!("Volume: {:.2}", v),
+        None => println!("Volume: Not applicable"),
+    }
 }
 
-fn read_f64() -> f64 {
-    let mut input = String::new();
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
-    input.trim().parse().expect("Invalid number")
+fn read_f64(prompt: &str) -> f64 {
+    loop {
+        let mut input = String::new();
+        print!("{}", prompt);
+        io::Write::flush(&mut io::stdout()).unwrap();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Sorry, failed to read line");
+        match input.trim().parse() {
+            Ok(val) => return val,
+            Err(_) => println!("Please enter a valid number."),
+        }
+    }
 }
 
-fn read_u32() -> u32 {
-    let mut input = String::new();
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line");
-    input.trim().parse().expect("Invalid number")
+fn read_u32(prompt: &str) -> u32 {
+    loop {
+        let mut input = String::new();
+        print!("{}", prompt);
+        io::Write::flush(&mut io::stdout()).unwrap();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Sorry, failed to read line");
+        match input.trim().parse() {
+            Ok(val) => return val,
+            Err(_) => println!("Please enter a valid number."),
+        }
+    }
 }

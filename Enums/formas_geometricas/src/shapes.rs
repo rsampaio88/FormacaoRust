@@ -29,7 +29,7 @@ impl Shape for Square {
     }
 
     fn volume(&self) -> Option<f64> {
-        None 
+        None
     }
 }
 
@@ -47,7 +47,7 @@ impl Shape for Circle {
     }
 
     fn volume(&self) -> Option<f64> {
-        None 
+        None
     }
 }
 
@@ -61,11 +61,11 @@ impl Shape for Cube {
     }
 
     fn perimeter(&self) -> Option<f64> {
-        None 
+        None
     }
 
     fn volume(&self) -> Option<f64> {
-        Some(self.side.powi(3)) 
+        Some(self.side.powi(3))
     }
 }
 
@@ -80,11 +80,11 @@ impl Shape for Cylinder {
     }
 
     fn perimeter(&self) -> Option<f64> {
-        None 
+        None
     }
 
     fn volume(&self) -> Option<f64> {
-        Some(PI * self.radius * self.radius * self.height) 
+        Some(PI * self.radius * self.radius * self.height)
     }
 }
 
@@ -98,11 +98,11 @@ impl Shape for Sphere {
     }
 
     fn perimeter(&self) -> Option<f64> {
-        None 
+        None
     }
 
     fn volume(&self) -> Option<f64> {
-        Some((4.0 / 3.0) * PI * self.radius.powi(3)) 
+        Some((4.0 / 3.0) * PI * self.radius.powi(3))
     }
 }
 
@@ -118,10 +118,10 @@ impl Shape for RegularPolygon {
     }
 
     fn perimeter(&self) -> Option<f64> {
-        Some(self.sides as f64 * self.length) 
+        Some(self.sides as f64 * self.length)
     }
 
     fn volume(&self) -> Option<f64> {
-        None /
+        None
     }
 }
