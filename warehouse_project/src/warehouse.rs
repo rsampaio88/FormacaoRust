@@ -1,11 +1,11 @@
 /*
- * =======================================================================
+ * ===========================================================================
  * Author:     Rita Ferreira
  * File:       warehouse.rs
- * Purpose:    Brief description of the program
- * =======================================================================
+ * Purpose:    Defines warehouse layout and logic for placing items using
+ *            different allocation strategies.
+ * ===========================================================================
  */
-
 
 use crate::item::Item;
 
@@ -77,7 +77,7 @@ impl Warehouse {
         None
     }
 
-    pub fn add_to_zone(&mut self, item: Item, row: usize, shelf: usize, zone: usize) {
+    pub fn add_zone(&mut self, item: Item, row: usize, shelf: usize, zone: usize) {
         self.rows[row].shelves[shelf].zones[zone].item = Some(item);
     }
 }
@@ -88,7 +88,9 @@ pub struct Row {
 
 impl Row {
     pub fn new() -> Row {
-        Row { shelves: Vec::new() }
+        Row {
+            shelves: Vec::new(),
+        }
     }
 
     pub fn add_shelf(&mut self, shelf: Shelf) {

@@ -2,7 +2,8 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       main.rs
- * Purpose:    Brief description of the program
+ * Purpose:    Main program logic for managing a warehouse inventory
+ *            system with filtering and placement strategies.
  * =======================================================================
  */
 
@@ -113,7 +114,7 @@ fn add_item(warehouse: &mut Warehouse) {
     }
 
     if let Some((r, s, z)) = warehouse.find_zone(&item) {
-        warehouse.add_to_zone(item, r, s, z);
+        warehouse.add_zone(item, r, s, z);
         println!("Item stored at Row {}, Shelf {}, Zone {}", r, s, z);
     } else {
         println!("No space available for the item.");

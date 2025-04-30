@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       tests.rs
+ * Purpose:    For testing.
+ * =======================================================================
+ */
+
 #[cfg(test)]
 mod tests {
     use crate::shapes::{Square, Circle, Cube, Cylinder, Sphere, RegularPolygon, Shape};

@@ -1,3 +1,12 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Implementation of mutation logic using an iterator over
+ *            a mutable array.
+ * =======================================================================
+ */
+
 fn mut_array_iterator(array: &mut [u32], operacao: char, outro_membro: u32) {
     array.iter_mut().for_each(|i| match operacao {
         '+' => *i += outro_membro,

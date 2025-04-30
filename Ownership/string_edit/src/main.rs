@@ -1,3 +1,24 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    interactive string manipulation: insert, remove, case
+ *            change, occurrence check, and repeat by alphabet position.
+ * =======================================================================
+ */
+
+/*
+Notes:
+
+    .c.is_ascii_alphabetic(): only alpha
+    .trim(): removes whitespaces, \n on the begining and end
+    .chars(): splits the string in chars "abcd" -> 'a' 'b' 'c' 'd'
+    .cycle(): creates an iterator to repeat char a,b,c,a,b,c,a,b,c,..
+    as u8: converts 'a' to ascii value
+    .to_string: convert to string
+    .repeat(n): repeates n times
+*/
+
 use std::io;
 
 fn main() {
@@ -146,13 +167,3 @@ fn repeat_string() -> String {
         })
         .collect()
 }
-
-/*
-    .c.is_ascii_alphabetic(): only alpha
-    .trim(): removes whitespaces, \n on the begining and end
-    .chars(): splits the string in chars "abcd" -> 'a' 'b' 'c' 'd'
-    .cycle(): creates an iterator to repeat char a,b,c,a,b,c,a,b,c,..
-    as u8: converts 'a' to ascii value
-    .to_string: convert to string
-    .repeat(n): repeates n times
-*/

@@ -2,10 +2,10 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       utils.rs
- * Purpose:    Brief description of the program
+ * Purpose:    Utility functions for console input and number parsing
+ *             with validation.
  * =======================================================================
  */
-
 
 use std::io::{self, Write};
 

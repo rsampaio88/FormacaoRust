@@ -1,3 +1,12 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       shapes.rs
+ * Purpose:    Defines the Shape trait and several geometric types to,
+ *            calculate area, perimeter, and volume.
+ * =======================================================================
+ */
+
 use std::f64::consts::PI;
 
 pub trait Shape {

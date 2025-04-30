@@ -2,7 +2,8 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       filter.rs
- * Purpose:    Brief description of the program
+ * Purpose:    Filtering system for warehouse item placement based on
+ *            constraints like max row and expiration.
  * =======================================================================
  */
 

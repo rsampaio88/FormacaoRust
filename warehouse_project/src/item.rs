@@ -2,7 +2,8 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       item.rs
- * Purpose:    Brief description of the program
+ * Purpose:    Represents items with quantity, quality types, and 
+ *            expiration logic for fragile goods.
  * =======================================================================
  */
 

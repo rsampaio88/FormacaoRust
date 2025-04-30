@@ -2,7 +2,7 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       main.rs
- * Purpose:    Implementation of a calculator
+ * Purpose:    Implementation of a Grocery2
  * =======================================================================
  */
 

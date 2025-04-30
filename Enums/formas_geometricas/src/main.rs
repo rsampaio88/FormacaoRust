@@ -1,3 +1,11 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    explore geometric shapes and compute their properties.
+ * =======================================================================
+ */
+
 use std::io;
 //use clearscreen::clear;
 use shapes::{Circle, Cube, Cylinder, RegularPolygon, Shape, Sphere, Square};

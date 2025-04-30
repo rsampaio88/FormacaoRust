@@ -1,3 +1,12 @@
+/*
+ * =======================================================================
+ * Author:     Rita Ferreira
+ * File:       main.rs
+ * Purpose:    Array mutation via ownership and mutable reference,
+ *            with tests for basic arithmetic operations.
+ * =======================================================================
+ */
+
 fn array_mut_ownership(array: [u32; 5], operation: char, other_member: u32) -> [u32; 5] {
     let mut new = array;
 

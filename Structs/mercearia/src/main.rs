@@ -1,10 +1,10 @@
 /*
- * =======================================================================
+ * ===============================================================================
  * Author:     Rita Ferreira
  * File:       main.rs
- * Purpose:    Implementation of a cgrocery store
- *              -
- * =======================================================================
+ * Purpose:    Implementation of a grocery store
+ *            - add, remove, move, change price &/ name &/ quantity of product
+ * ===============================================================================
  */
 
 use std::collections::HashMap;

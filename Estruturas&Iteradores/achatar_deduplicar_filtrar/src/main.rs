@@ -2,7 +2,8 @@
  * =======================================================================
  * Author:     Rita Ferreira
  * File:       main.rs
- * Purpose:    Implementation of a calculator
+ * Purpose:    Implementation of the logic for flattening,
+ *            deduplication, and filtering
  * =======================================================================
  */
 
